@@ -19,6 +19,13 @@ spec:
         image: fir3eye/springboot1:latest
         ports:
         - containerPort: 8080
+        env:
+        - name: DB_USERNAME
+          value: "{{db_username}}"  # Placeholder for the secret from AWS
+        - name: DB_PASSWORD
+          value: "{{db_password}}"  # Placeholder for the secret from AWS
+        - name: API_KEY
+          value: "{{api_key}}"       # Placeholder for the secret from AWS
 ---
 apiVersion: v1
 kind: Service
@@ -31,5 +38,6 @@ spec:
     - protocol: TCP
       port: 80
       targetPort: 8080
-      NodePort: 30000  # Optional: Specify a port between 30000-32767
+      NodePort: 30000
   type: NodePort
+
