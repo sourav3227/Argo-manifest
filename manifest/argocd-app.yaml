@@ -26,18 +26,3 @@ spec:
           value: "{{db_password}}"  # Placeholder for the secret from AWS
         - name: API_KEY
           value: "{{api_key}}"       # Placeholder for the secret from AWS
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: springboot-app-service
-spec:
-  selector:
-    app: springboot-app
-  ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 8080
-      NodePort: 30000
-  type: NodePort
-

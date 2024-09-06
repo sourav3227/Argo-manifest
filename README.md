@@ -1,43 +1,20 @@
-# Installation Instructions
-## Step 1: Install Docker
-- Install Docker:
-```
-sudo apt-get install docker.io
-```
-- Add your user to the Docker group to run Docker without sudo:
-```
-sudo usermod -aG docker $USER && newgrp docker
-```
+# Spring Boot App with AWS Secrets and Argo CD
 
-## Step 2: Install Minikube
-- Download the Minikube binary:
-```
-wget https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
-sudo cp minikube-linux-amd64 /usr/local/bin/minikube
-sudo chmod 755 /usr/local/bin/minikube
-```
-- Start Minikube and Check Status:
-```
-minikube start
-minikube status
-```
-## Step 3: Install Kubectl
+This project demonstrates how to deploy a Spring Boot application on Kubernetes using Argo CD, where secrets are dynamically fetched from AWS Secrets Manager at deployment time.
 
-```
-sudo curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
-sudo chmod +x kubectl
-sudo mv kubectl /usr/local/bin/kubectl
-```
+## Prerequisites
 
-## Step 4: Install ArgoCD
-```
-kubectl create namespace argocd
-kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
-kubectl port-forward svc/argocd-server -n argocd 8080:443
-```
-- Retrieve the initial admin password for ArgoCD:
-```
-kubectl get secret -n argocd argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
-```
-## Step 5: Deploy an App on ArgoCD
-Follow the ArgoCD documentation to deploy your first application.
+- Kubernetes cluster (Minikube, EKS, etc.)
+- Argo CD installed on your cluster
+- AWS CLI installed and configured with permissions to access AWS Secrets Manager
+- Git repository to hold the manifests
+
+## Steps
+
+1. Clone this repository.
+
+2. Update `deployment.yaml` if needed to add any additional environment variables for secrets.
+
+3. Deploy the Argo CD ConfigMap to configure the secret-fetcher plugin:
+   ```bash
+   kubectl apply -f manifests/argocd-cm.yaml
