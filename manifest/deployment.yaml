@@ -1,21 +1,31 @@
-apiVersion: argoproj.io/v1alpha1
-kind: Application
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: springboot-app
-  namespace: argocd
+  name: my-app
+  namespace: default
 spec:
-  project: default
-  source:
-    repoURL: 'https://github.com/sourav3227/Argo-manifest.git'  # Replace with your repo URL
-    path: manifest
-    targetRevision: HEAD
-  destination:
-    server: 'https://kubernetes.default.svc'
-    namespace: default
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-  plugin:
-    name: aws-secret-fetcher  # Custom plugin to fetch secrets from AWS Secrets Manager
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-app
+  template:
+    metadata:
+      labels:
+        app: my-app
+    spec:
+      containers:
+      - name: my-app
+        image: nginx:latest
+        env:
+        - name: AWS_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              name: my-secret
+              key: AWS_ACCESS_KEY_ID
+        - name: AWS_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: my-secret
+              key: AWS_SECRET_ACCESS_KEY
+
 
