@@ -7,7 +7,7 @@ spec:
   project: default
   source:
     repoURL: 'https://github.com/sourav3227/Argo-manifest.git'  # Replace with your repo URL
-    path: manifests
+    path: manifest
     targetRevision: HEAD
   destination:
     server: 'https://kubernetes.default.svc'
